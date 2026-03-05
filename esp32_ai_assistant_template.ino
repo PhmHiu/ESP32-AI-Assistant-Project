@@ -229,7 +229,17 @@ String captureAndEncodeImage() {
   
   Serial.println("Capturing image...");
   
-  // Capture image
+  // IMPORTANT: Flush old frames from buffer to get fresh image
+  // Discard 2-3 old frames that might be cached
+  for (int i = 0; i < 3; i++) {
+    camera_fb_t * fb_discard = esp_camera_fb_get();
+    if (fb_discard) {
+      esp_camera_fb_return(fb_discard);
+    }
+    delay(10);  // Small delay between flushes
+  }
+  
+  // Now capture the fresh frame
   camera_fb_t * fb = esp_camera_fb_get();
   if (!fb) {
     Serial.println("Camera capture failed!");
