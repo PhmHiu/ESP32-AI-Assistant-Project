@@ -41,6 +41,9 @@
 #define HREF_GPIO_NUM      7
 #define PCLK_GPIO_NUM     13
 
+// Camera sensor ID for OV3660
+#define OV3660_PID 0x3660
+
 // ==================== CONFIGURATION SECTION ====================
 // STUDENTS: EDIT THIS SECTION WITH YOUR SETTINGS
 
@@ -98,23 +101,26 @@ bool initCamera() {
   config.pin_pclk = PCLK_GPIO_NUM;
   config.pin_vsync = VSYNC_GPIO_NUM;
   config.pin_href = HREF_GPIO_NUM;
-  config.pin_sscb_sda = SIOD_GPIO_NUM;
-  config.pin_sscb_scl = SIOC_GPIO_NUM;
+  config.pin_sccb_sda = SIOD_GPIO_NUM;
+  config.pin_sccb_scl = SIOC_GPIO_NUM;
   config.pin_pwdn = PWDN_GPIO_NUM;
   config.pin_reset = RESET_GPIO_NUM;
   config.xclk_freq_hz = 20000000;
   config.pixel_format = PIXFORMAT_JPEG;
+  config.grab_mode = CAMERA_GRAB_WHEN_EMPTY;  // Important for ESP32-S3
+  config.fb_location = CAMERA_FB_IN_PSRAM;    // Use PSRAM for frame buffer
   
   // Image quality settings (balance between quality and memory)
-  // QVGA is good for ESP32's limited memory
   if(psramFound()){
     config.frame_size = FRAMESIZE_QVGA;  // 320x240
     config.jpeg_quality = 10;             // 0-63, lower = better quality
     config.fb_count = 2;
+    config.grab_mode = CAMERA_GRAB_LATEST;  // Get latest frame when PSRAM available
   } else {
     config.frame_size = FRAMESIZE_QVGA;
     config.jpeg_quality = 12;
     config.fb_count = 1;
+    config.fb_location = CAMERA_FB_IN_DRAM;  // Fallback to DRAM if no PSRAM
   }
   
   // Initialize camera
@@ -122,6 +128,14 @@ bool initCamera() {
   if (err != ESP_OK) {
     Serial.printf("Camera init failed with error 0x%x\n", err);
     return false;
+  }
+  
+  // Get sensor and apply settings for OV3660
+  sensor_t *s = esp_camera_sensor_get();
+  if (s->id.PID == OV3660_PID) {
+    s->set_vflip(s, 1);        // flip it back
+    s->set_brightness(s, 1);   // up the brightness just a bit
+    s->set_saturation(s, -2);  // lower the saturation
   }
   
   Serial.println("Camera initialized successfully!");
