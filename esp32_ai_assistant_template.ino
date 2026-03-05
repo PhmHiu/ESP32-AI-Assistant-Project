@@ -48,8 +48,8 @@
 // STUDENTS: EDIT THIS SECTION WITH YOUR SETTINGS
 
 // WiFi Credentials
-const char* WIFI_SSID = "iPhone";        // Replace with your WiFi name
-const char* WIFI_PASSWORD = "asdfghjkl"; // Replace with your WiFi password
+const char* WIFI_SSID = "";        // Replace with your WiFi name
+const char* WIFI_PASSWORD = ""; // Replace with your WiFi password
 
 // OpenRouter API Configuration
 const char* OPENROUTER_API_KEY = ""; // Get your API key from https://openrouter.ai/
