@@ -1,13 +1,14 @@
-#include <math.h>
 void setup()
 {
-   Serial.begin(9600);
+    Serial.begin(9600);//Set Baud Rate to 9600 bps
 }
-void loop()
-{
-  double val=analogRead(0);
-  double fenya=(val/1023)*5;
-  double r=(5-fenya)/fenya*4700;
-  Serial.println( 1/(  log(r/10000) /3950 + 1/(25+273.15))-273.15);
-  delay(1000);
+ void loop()
+{  int val;
+    int dat;
+    val=analogRead(0);//Connect LM35 on Analog 0
+    dat=(500 * val) /1024;;
+    Serial.print("Temp:"); //Display the temperature on Serial monitor
+    Serial.print(dat);
+    Serial.println("C");
+    delay(500);
 }
