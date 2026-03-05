@@ -48,11 +48,11 @@
 // STUDENTS: EDIT THIS SECTION WITH YOUR SETTINGS
 
 // WiFi Credentials
-const char* WIFI_SSID = "YOUR_WIFI_NAME";        // Replace with your WiFi name
-const char* WIFI_PASSWORD = "YOUR_WIFI_PASSWORD"; // Replace with your WiFi password
+const char* WIFI_SSID = "iPhone";        // Replace with your WiFi name
+const char* WIFI_PASSWORD = "asdfghjkl"; // Replace with your WiFi password
 
 // OpenRouter API Configuration
-const char* OPENROUTER_API_KEY = "YOUR_API_KEY_HERE"; // Get your API key from https://openrouter.ai/
+const char* OPENROUTER_API_KEY = "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"; // Get your API key from https://openrouter.ai/
 const char* OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
 
 // Model Selection - Choose one or add your own!
@@ -152,7 +152,7 @@ float readTemperature() {
   // YOUR CODE HERE
   // Example: return dht.readTemperature();
   // For now, returning a placeholder value
-  return -999.0; // -999 indicates: not implemented yet
+  return 40; // -999 indicates: not implemented yet
 }
 
 // Example: Light Level Sensor
@@ -226,20 +226,16 @@ String captureAndEncodeImage() {
     Serial.println("Camera not initialized!");
     return "";
   }
-  
-  Serial.println("Capturing image...");
-  
-  // IMPORTANT: Flush old frames from buffer to get fresh image
-  // Discard 2-3 old frames that might be cached
-  for (int i = 0; i < 3; i++) {
-    camera_fb_t * fb_discard = esp_camera_fb_get();
-    if (fb_discard) {
-      esp_camera_fb_return(fb_discard);
-    }
-    delay(10);  // Small delay between flushes
+
+  Serial.println("Capturing fresh image...");
+
+  camera_fb_t * fb_temp = esp_camera_fb_get();
+  if (fb_temp) {
+      esp_camera_fb_return(fb_temp); 
   }
-  
-  // Now capture the fresh frame
+  // ------------------------------
+
+  // Get new frame to send
   camera_fb_t * fb = esp_camera_fb_get();
   if (!fb) {
     Serial.println("Camera capture failed!");
