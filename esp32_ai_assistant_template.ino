@@ -152,7 +152,7 @@ float readTemperature() {
   // YOUR CODE HERE
   // Example: return dht.readTemperature();
   // For now, returning a placeholder value
-  return 40; // -999 indicates: not implemented yet
+  return -999; // -999 indicates: not implemented yet
 }
 
 // Example: Light Level Sensor
