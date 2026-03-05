@@ -52,7 +52,7 @@ const char* WIFI_SSID = "iPhone";        // Replace with your WiFi name
 const char* WIFI_PASSWORD = "asdfghjkl"; // Replace with your WiFi password
 
 // OpenRouter API Configuration
-const char* OPENROUTER_API_KEY = "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"; // Get your API key from https://openrouter.ai/
+const char* OPENROUTER_API_KEY = ""; // Get your API key from https://openrouter.ai/
 const char* OPENROUTER_ENDPOINT = "https://openrouter.ai/api/v1/chat/completions";
 
 // Model Selection - Choose one or add your own!
